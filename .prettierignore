@@ -1,0 +1,8 @@
+#here we want to write the name of the file where we dont want to use prettier
+/.vscode
+/node_modules
+./dist
+
+*.env
+.env
+*
