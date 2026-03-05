@@ -2,6 +2,8 @@ import multer, { diskStorage } from "multer"
 import path from "path"
 import fs from "fs"
 
+//Instead of multer we can also use express-fileupload
+
 // const uploadPath = path.join(process.cwd(), "Public/temp");
 
 // if (!fs.existsSync(uploadPath)) {

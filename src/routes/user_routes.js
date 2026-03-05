@@ -5,6 +5,10 @@ import { verifyJwt } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 // here we created router aur create route for registerUser FUNC but where to call it aur import it we do it in app.js
+//to read more read multer&skipMiddlewareFunction.md file from nodejs notes
+//here uploads.fields from multer internally
+//Multer provides different methods to handle different upload types
+//to know about more upload types read uploadTypes.md from nodejs notes
 router.route( "/register" ).post( upload.fields([
      {  // here we define name and said we will only accept the field with name = avatar so when we design the frontend it should also have same name 
         name: "avatar",
