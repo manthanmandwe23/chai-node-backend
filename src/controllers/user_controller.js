@@ -6,6 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken"
 //hashnode website
+// for more details about aggregtion pipline read AggregationRules.md from nodejs notes
 
 const generateAccessAndRefreshToken = async (userid)=>{
    try {
@@ -189,8 +190,8 @@ const logoutUser = asyncHandler(async (req, res)=>{
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: {
+                refreshToken: 1
             }
         },
         // here we added new: true to get updated response where refreshToken will be undefined
@@ -301,8 +302,8 @@ const updateAccountDetails = asyncHandler( async (req, res)=>{
 
     const updatedField = {}
     if(username) updatedField.username = username
-    if(username) updatedField.fullName = fullName
-    if(username) updatedField.email = email
+    if(fullName) updatedField.fullName = fullName
+    if(email) updatedField.email = email
 
     const user = await User.findByIdAndUpdate(req.user?._id, {
         $set: updatedField
@@ -341,7 +342,7 @@ const updateUserAvatar = asyncHandler(async (req, res)=>{
 const updateUserCoverImage = asyncHandler(async (req, res)=>{
     const coverImageLocalpath = req.file?.path
     if (!coverImageLocalpath) {
-        throw new ApiError(400, "Avatar is required")
+        throw new ApiError(400, "coverImage is required")
     }
 
     const uploadedCoverImage = await uploadOnCloudinary(coverImageLocalpath)
@@ -401,7 +402,9 @@ const getUserChannelProfile = asyncHandler( async (req, res) => {
             //check if we are in subscribers list or not if yes send true or false 
             isSuscribed:{
                 $cond:{
-                    if:{$in:[ req.user?._id, $subcribers.subscriber]}
+                    if:{$in:[ req.user?._id, "$subcribers.subscriber"]},
+                    then: true,
+                    else: false
                 }
             }
         }
@@ -412,6 +415,7 @@ const getUserChannelProfile = asyncHandler( async (req, res) => {
             username: 1,
             subscriberCount: 1,
             channelsubscriberToCount: 1,
+            isSuscribed: 1,
             avatar: 1,
             coverImage: 1,
         }
@@ -440,7 +444,7 @@ const getUserWatchHistory = asyncHandler( async (req, res)=>{
         },
         {
             $lookup:{
-                from: "vedios",
+                from: "videos",
                 localField: "watchHistory",
                 foreignField:"_id",
                 as: "watchHistory",
@@ -484,4 +488,3 @@ const getUserWatchHistory = asyncHandler( async (req, res)=>{
 })
 
 export {registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateUserCoverImage, updateUserAvatar, getUserChannelProfile, getUserWatchHistory}
-    

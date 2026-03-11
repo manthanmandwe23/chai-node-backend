@@ -6,13 +6,25 @@ import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const vedioSchema = new Schema( {
-    vedioFile: {
-        type: String, //cloudinary url
-        required: true
+    videoFile: {
+        url: {
+            type: String,
+            required: true
+        },
+        public_id: {
+            type: String,
+            required: true
+         }
     },
     thumbnail: {
-        type: String, //cloudinary url
-        required: true
+        url: {
+            type: String,
+            required: true
+        },
+        public_id: {
+            type: String,
+            required: true
+         }
     },
     title: {
         type: String,
@@ -45,4 +57,4 @@ const vedioSchema = new Schema( {
 vedioSchema.plugin(mongooseAggregatePaginate)
 // A plugin in Mongoose is just a reusable function that adds extra features to your schema.
 // for more detail about plugin read plugins.md file from nodejs notes
-export const Video = mongoose.Model("Video", vedioSchema)
+export const Video = mongoose.model("Video", vedioSchema)
