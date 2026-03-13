@@ -9,10 +9,10 @@ const playlistSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    vedios:[
+    video:[
         {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Vedio"
+        ref: "Video"
     }
     ],
     owner:{

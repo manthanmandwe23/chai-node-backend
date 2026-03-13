@@ -16,4 +16,4 @@ router.route("/deleteVedio").delete(verifyJwt, deleteVideo)
 
 router.route("/togglePublishStatus").post(verifyJwt, togglePublishStatus)
 
-export {router}
+export default router
