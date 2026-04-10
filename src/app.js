@@ -19,12 +19,15 @@ import videoRouter from "./routes/video_routes.js"
 import commentRouter from "./routes/comment_router.js"
 import likeRouter from "./routes/like_routes.js"
 import tweetRouter from "./routes/tweet_routes.js"
+import { errorHandler } from "./middlewares/errorHandling_middleware.js"
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/video", videoRouter)
 app.use("/api/v1/comment", commentRouter)
 app.use("/api/v1/likes", likeRouter)
 app.use("/api/v1/tweet", tweetRouter)
+
+app.use(errorHandler)
 
 export { app }
 
